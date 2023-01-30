@@ -56,5 +56,4 @@ mod my_mod {
             println!("called 'my_mod::private_nested::function()'");
         }
     }
-
 }
