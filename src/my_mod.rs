@@ -20,7 +20,7 @@ mod my_mod {
         pub fn function() {
             println!("called 'my_mod::nested::function()'");
         }
-        #[allow(dead_code)]
+        // #[allow(dead_code)]
         fn private_function() {
             println!("called 'my_mod::nested::private_function()'");
         }
