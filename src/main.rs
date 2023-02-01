@@ -123,7 +123,7 @@ mod mymy {
         function();
 
         // 我们也可以用 `self` 来访问 `my` 内部的另一个模块。
-        se
+
     }
 }
 //endregion
