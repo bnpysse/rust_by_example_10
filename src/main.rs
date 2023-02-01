@@ -80,7 +80,8 @@ mod my {
 //endregion
 
 //region 10.3.use声明
-// use 声明可以将一个完整的路径绑定到一个新的名字
+// use 声明可以将一个完整的路径绑定到一个新的名字,从而更容易访问。
+
 use deeply::nested::function as other_function;
 
 fn function() {
@@ -96,14 +97,14 @@ mod deeply {
 }
 //endregion
 
-//region 10.3.super和self
+//region 10.4.super和self
 mod cool {
     pub fn function() {
         println!("called `cool::function()`");
     }
 }
 
-mod mymy {
+mod my_my {
     fn function() {
         println!("called `my::function()`");
     }
@@ -114,7 +115,7 @@ mod mymy {
     }
     pub fn indirect_call() {
         // 让我们从这作用域中访问所有名为 'function' 的函数！
-        println!("called `my::indirec_call()`, that\n");
+        println!("called `my::indirect_call()`, that\n>");
 
         // self 关键字表示当前的模块作用域，在这个例子里是 `my`。
         // 调用 `self::function()` 和直接调用 `function()` 的结果是一样的！
@@ -123,10 +124,20 @@ mod mymy {
         function();
 
         // 我们也可以用 `self` 来访问 `my` 内部的另一个模块。
+        self::cool::function();
 
+        // `super` 关键字表示父作用域（在 `my` 模块的外面）。
+        super::function();
+        // 这将在 *crate* 作用域内绑定 `cool::function`。
+        // 在这个例子中，crate 的作用域是最外面的作用域。
+        {
+            use crate::cool::function as root_function;
+            root_function();
+        }
     }
 }
 //endregion
+
 fn main() {
     //region 10.1.模块可见性
     // 模块机制消除了相同名字的项之间的歧义。
@@ -166,16 +177,22 @@ fn main() {
     other_function();
     println!("Entering block");
     {
+        // 这和 'user deeply::nested::function as function;'等价。
+        // 此 'function()' 将遮蔽外部的同名函数。
         use deeply::nested::function;
+        function();
+
+        // 'use' 绑定拥有局部作用域。在这个例子中，'function' 的遮蔽
+        // 只存在这个代码块中
         println!("Leaving block");
     }
     function();
     //endregion
 
-    //region 10.3.super和self
-    println!("\n\n=====10.3.super和self=====");
+    //region 10.4.super和self
+    println!("\n\n=====10.4.super和self=====");
     // 可以在路径中使用 super(父级) 和 sef(自身) 关键字，从而在访问项时消除歧义，以及防止不必要的路径硬编码。
-
+    my_my::indirect_call();
 
     //endregion
 }
