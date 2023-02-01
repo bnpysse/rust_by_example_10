@@ -94,7 +94,39 @@ mod deeply {
         }
     }
 }
+//endregion
 
+//region 10.3.super和self
+mod cool {
+    pub fn function() {
+        println!("called `cool::function()`");
+    }
+}
+
+mod mymy {
+    fn function() {
+        println!("called `my::function()`");
+    }
+    mod cool {
+        pub fn function() {
+            println!("called `my::cool::function()`");
+        }
+    }
+    pub fn indirect_call() {
+        // 让我们从这作用域中访问所有名为 'function' 的函数！
+        println!("called `my::indirec_call()`, that\n");
+
+        // self 关键字表示当前的模块作用域，在这个例子里是 `my`。
+        // 调用 `self::function()` 和直接调用 `function()` 的结果是一样的！
+        // 因为它们表示相同的函数。
+        self::function();
+        function();
+
+        // 我们也可以用 `self` 来访问 `my` 内部的另一个模块。
+        se
+    }
+}
+//endregion
 fn main() {
     //region 10.1.模块可见性
     // 模块机制消除了相同名字的项之间的歧义。
@@ -138,4 +170,12 @@ fn main() {
         println!("Leaving block");
     }
     function();
+    //endregion
+
+    //region 10.3.super和self
+    println!("\n\n=====10.3.super和self=====");
+    // 可以在路径中使用 super(父级) 和 sef(自身) 关键字，从而在访问项时消除歧义，以及防止不必要的路径硬编码。
+
+
+    //endregion
 }
